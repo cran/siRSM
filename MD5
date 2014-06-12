@@ -1,0 +1,16 @@
+fb8e6fb6112efa48b02b472541f53d51 *DESCRIPTION
+73599dd6fbdfa7677c41716a937388e4 *NAMESPACE
+dc605c9d5bf49db65bb3440518fe3455 *R/generate.simulation.R
+3acab399b598fed0fc81fcace7e3d159 *R/siRSM-fitting.R
+5608033b4779c27952e6da789a1868e6 *R/siRSM-inference.R
+f34d9e7950b5b9f18b8b5015ca959385 *R/siRSM-plotting.R
+4722efbc3567a862587b31d4d5138f55 *man/ci.index.Rd
+2c92e358d176497b92ab15cc2885ad38 *man/ci.surface.Rd
+a7b75ee76520db9067b8baf3a587f388 *man/draw.interaction.only.Rd
+92c09796a6a25eb871759ecf26b08a48 *man/generate.simulation.Rd
+d2341c06502ca72e4a40825305f4b9ce *man/multi.run.Rd
+d06bf46edc116e18093325653d13bfe2 *man/siRSM-package.Rd
+594fe5c3c4323bd1c94cf276fda74434 *man/siRSM.Rd
+54180210336dcd38fe34d098fdd8e8a9 *man/single.run.Rd
+eabb2c11d3c09f3aca0c214b3ab4b1eb *man/surface.stats.Rd
+026446beba2e3e25e483ba6fcdda1dd7 *man/surface.test.Rd

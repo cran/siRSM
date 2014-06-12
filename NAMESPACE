@@ -1,0 +1,3 @@
+exportPattern("^[[:alpha:]]+")
+import(rsm, MASS, foreach, doSNOW, parallel)
+export(siRSM, surface.test, surface.stats, ci.index, ci.surface)

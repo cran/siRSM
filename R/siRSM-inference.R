@@ -1,16 +1,17 @@
 surface.test <- function(object)
 {
+   cat('Testing curvature of quadratic surface CONDITIONAL on the index ...\n\n')
+   dxyz <- data.frame(u=object$u, v=object$v, y=object$y)
+   lm0 <- lm(y~u+v,data=dxyz)
+   lm1 <- lm(y~u+v+I(u*v),data=dxyz)
    if (object$type=='interaction.only') {
-     cat('Nested ANOVA test of surface curvature NOT available for interaction-only models ...\n')
+    return(anova(lm0, lm1))
    }
    else{
-    cat('Testing curvature of quadratic surface CONDITIONAL on the index ...\n\n')
-    dxyz <- data.frame(u=object$u, v=object$v, y=object$y)
-    lm0 <- lm(y~u+v,data=dxyz)
-    lm1 <- lm(y~u+v+I(u*v),data=dxyz)
     lm2 <- lm(y~u+v+I(u^2)+I(u*v)+I(v^2),data=dxyz)
-    anv <- anova(lm0, lm1, lm2)
-    return(anv)
+    anv1 <- anova(lm0, lm1, lm2)
+	anv2 <- anova(lm0, lm2)
+    return(list(anv1,anv2))
    }
 }
 
@@ -164,13 +165,18 @@ ci.surface <- function(obj, B=500, use.parallel=TRUE)
   dimnames(line.incongr)[[1]]=c('ax','ax2')
   dimnames(line.incongr)[[2]]=c('lower2.5','upper97.5','mean','std.err')
 
-  return(list(stationary.point=stationary.point,prin.ax.1=prin.ax.1,prin.ax.2=prin.ax.2,beta=beta,line.congr=line.congr,line.incongr=line.incongr))
+  return(list(stationary.point=round(stationary.point,4),
+              prin.ax.1=round(prin.ax.1,4),
+			  prin.ax.2=round(prin.ax.2,4),
+			  beta=round(beta,4),
+			  line.congr=round(line.congr,4),
+			  line.incongr=round(line.incongr,4)))
 }
 
 #################################################################################
 # ci.index: bootstrap inference for the single index
 #################################################################################
-ci.index <- function(y, U, V, interaction.only=FALSE, B=100, use.parallel=TRUE)
+ci.index <- function(y, U, V, B=100, use.parallel=TRUE, ...)
 {
   if (ncol(U) != ncol(V)) {
     cat('Covariate dimensions do not match!\n')
@@ -187,7 +193,7 @@ ci.index <- function(y, U, V, interaction.only=FALSE, B=100, use.parallel=TRUE)
 	clusterExport(cl, c('siRSM', 'siRSM.default', 'single.run', 'multi.run'))
     w <- foreach(b=1:B, .combine=rbind, .verbose=FALSE) %dopar% {
 	  ind=sample(1:nrow(X),size=nrow(X),replace=TRUE);
-      m=siRSM(y[ind],X[ind,],Z[ind,],interaction.only=interaction.only,use.parallel=FALSE);
+      m=siRSM(y[ind],X[ind,],Z[ind,],use.parallel=FALSE,...);
 	  return(as.vector(m$w));
     }
 	stopCluster(cl)
@@ -197,7 +203,7 @@ ci.index <- function(y, U, V, interaction.only=FALSE, B=100, use.parallel=TRUE)
     for (b in 1:B){
 	  cat('running bootstrap iteration',b,'\n')
 	  ind=sample(1:nrow(X),size=nrow(X),replace=TRUE)
-      m=siRSM(y[ind],X[ind,],Z[ind,],interaction.only=interaction.only,use.parallel=FALSE)
+      m=siRSM(y[ind],X[ind,],Z[ind,],use.parallel=FALSE,...)
 	  w[b,]=as.vector(m$w)
     }
    }	
@@ -218,5 +224,5 @@ ci.index <- function(y, U, V, interaction.only=FALSE, B=100, use.parallel=TRUE)
 	std.err=apply(w,2,sd))
 	dimnames(index)[[1]]=paste('w',1:ncol(X),sep='')
   }	
-  return(index)
+  return(round(index,4))
 }

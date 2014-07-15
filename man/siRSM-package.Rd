@@ -3,12 +3,11 @@
 \docType{package}
 \title{siRSM: Single-index Response Surface Models}
 \description{This package provides tools for fitting what we call "single-index response surface models", that is, models of the form \code{y=f(u,v)+e}, where \code{f(u,v) ~ 1 + u + v + u^2 + uv + v^2}, \code{u=t(w)\%*\%U}, and \code{v=t(w)\%*\%V}.}
-\details{
-\tabular{ll}{
+\details{\tabular{ll}{
 Package: \tab siRSM\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2014-06-12\cr
+Version: \tab 1.1\cr
+Date: \tab 2014-07-15\cr
 License: \tab GPL-2\cr
 }}
 \author{Huan Cheng, Mu Zhu
@@ -26,31 +25,35 @@ Cheng H, Zhu M, Chan VW, Michela, JL (in preparation), "Single-index response su
 }
 \examples{
 \dontrun{
-# generate some data (using a function provided within this package)
-tmp=generate.simulation()
-y=tmp$data[,'intent']
-U=tmp$data[,c('s1','s2')]
-V=tmp$data[,c('e1','e2')]
+# load illustrative data set provided within the package
+data(EdwardsMBA)
 
-# fit a single-index RSM
-model=siRSM(y,U,V,use.parallel=TRUE)
-model
+# parse the variables
+y=EdwardsMBA[,'AVGSAT4']
+U=EdwardsMBA[,c('PCPRE','DMPRE','EIPRE','MRPRE')]
+V=EdwardsMBA[,c('PCACT','DMACT','EIACT','MRACT')]
 
-# test the curvature of the quadratic response surface CONDITIONAL on the index
-surface.test(model)
+# fit the model
+m1=siRSM(y,U,V)
 
-# obtain various feature parameters for the quadratic response surface
-surface.stats(model)
+# look at the model
+m1
+plot(m1)
 
-# plot the surface
-plot(model)
+# F-test of surface curvature
+surface.test(m1)
 
-# confidence intervals for the index (using just 10 bootstrap samples here)
-indstat=ci.index(y,U,V,B=10,use.parallel=TRUE)
-indstat
+# inference on the index (using just 10 bootstrap samples here)
+ci.index(y,U,V,B=10)
 
-# (conditional) confidence intervals for various surface statistics
-surfstat=ci.surface(model)
-surfstat
+# obtain statistics of the response surface (conditional on the estimated index)
+surface.stats(m1)
+
+# inference for these surface statistics (again, conditional on the estimated index)
+ci.surface(m1)
+
+# fit an interaction-only model
+m2=siRSM(y,U,V,interaction.only=TRUE)
+plot(m2)
 }
 }

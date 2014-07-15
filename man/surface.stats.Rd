@@ -2,7 +2,7 @@
 \alias{surface.stats}
 \alias{surface.stats.main}
 \title{Statistics of Quadratic Response Surface}
-\description{Computes stationary point, 1st and 2nd principal axes of the quadratic response surface, shapes and curvatures along the congruence and incongruence lines, as well as various parameters useful for \code{plot.siRSM}. Mostly for internal use only.}
+\description{Computes stationary point, 1st and 2nd principal axes of the quadratic response surface, shapes and curvatures along the congruence and incongruence lines, as well as various parameters useful for \code{plot.siRSM}. }
 \usage{
 surface.stats(obj)
 surface.stats.main(b, xlim, ylim)

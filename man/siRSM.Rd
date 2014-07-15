@@ -26,7 +26,7 @@
   \code{xname}=character string, name for first (composite) factor;
   \code{yname}=character string, name for second (composite) factor;
   \code{zname}=character string, name for response;
-  \code{center}=if 'scale', centers the surface plot at \code{(0,0)}, otherwise, centers at data mean}
+  \code{center}=if 'zero', centers the surface plot at \code{(0,0)}}
 }
 \value{An object of class \code{siRSM}. For most users, the most useful elements are:
  \item{w}{the estimated single index vector}

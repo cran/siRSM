@@ -5,7 +5,7 @@
 \description{Internal function called by \code{plot.siRSM}. Do NOT use.}
 \usage{
 draw.interaction.only(x, xname=NULL, yname=NULL, zname=NULL)
-draw.full.quadratic(x, xname=NULL, yname=NULL, zname=NULL, center='scale', 
+draw.full.quadratic(x, xname=NULL, yname=NULL, zname=NULL, center='zero', 
   debug=FALSE)
 }
 \arguments{
@@ -13,7 +13,7 @@ draw.full.quadratic(x, xname=NULL, yname=NULL, zname=NULL, center='scale',
   \item{xname}{character string, name for first (composite) factor}
   \item{yname}{character string, name for second (composite) factor}
   \item{zname}{character string, name for response}
-  \item{center}{if 'scale', centers the surface plot at \code{(0,0)}; otherwise, centers ...}
+  \item{center}{if 'zero', centers the surface plot at \code{(0,0)}}
   \item{debug}{can be turned on for debugging purposes}
 }
 \author{Huan Cheng, Mu Zhu}

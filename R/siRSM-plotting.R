@@ -87,17 +87,17 @@ surface.stats <- function(obj)
     b=obj$coef
   }
   tmp=surface.stats.main(b)
-  return(data.frame(u0=tmp$u0, v0=tmp$v0,
-              p10=tmp$p10, p11=tmp$p11,
-              p20=tmp$p20, p21=tmp$p21,
-			  ax.congr=tmp$ax.congr, ax2.congr=tmp$ax2.congr,
-			  ax.incongr=tmp$ax.incongr, ax2.incongr=tmp$ax2.incongr))
+  return(data.frame(u0=round(tmp$u0,4), v0=round(tmp$v0,4),
+              p10=round(tmp$p10,4), p11=round(tmp$p11,4),
+              p20=round(tmp$p20,4), p21=round(tmp$p21,4),
+			  ax.congr=round(tmp$ax.congr,4), ax2.congr=round(tmp$ax2.congr,4),
+			  ax.incongr=round(tmp$ax.incongr,4), ax2.incongr=round(tmp$ax2.incongr,4)))
 }
 
 #################################################################################
 # plot.siRSM: creates 3D perspective plot of the siRSM model, uses 'rsm' package
 #################################################################################
-draw.full.quadratic <- function(x, xname=NULL, yname=NULL, zname=NULL, center='scale', debug=FALSE)
+draw.full.quadratic <- function(x, xname=NULL, yname=NULL, zname=NULL, center='zero', debug=FALSE)
 {
 # Written by Huan Cheng, 2014
 # Modified by Mu Zhu, 2014
@@ -116,9 +116,12 @@ draw.full.quadratic <- function(x, xname=NULL, yname=NULL, zname=NULL, center='s
   r.x=max.x-min.x; r.y=max.y-min.y
   min.x = min.x - r.x/10; max.x = max.x + r.x/10
   min.y = min.y - r.y/10; max.y = max.y + r.y/10
-  if (center=='scale') {
-    min.x<-min.y<-min(min.x,min.y)
-	max.x<-max.y<-max(max.x,max.y)
+  min.x<-min.y<-min(min.x,min.y)
+  max.x<-max.y<-max(max.x,max.y)
+  if (center=='zero') {
+ 	R=max(abs(min.x),abs(max.x))
+	min.x<-min.y<-(-R)
+	max.x<-max.y<-R
   }  
   
   ### Draw the surface plot 
@@ -143,14 +146,12 @@ draw.full.quadratic <- function(x, xname=NULL, yname=NULL, zname=NULL, center='s
   # data points going into the fitting of response surface
   points(trans3d(x$u,x$v,z=minv,pmat=res),cex=0.5,col='grey')
   
-  # 45 degree lines (need to modify)
-  if (center=='scale'){
+  # 45 degree lines 
   xlxh <- c(min.x,max.x)
   ylyh <- c(min.y,max.y)
   yhyl <- c(max.y,min.y) 
   lines(trans3d(xlxh,ylyh,z=minv,pmat=res),lty=3)
   lines(trans3d(xlxh,yhyl,z=minv,pmat=res),lty=3)
-  }
   
   # x- and y-axes
   lines(trans3d(c(0,0),c(min.y,max.y),z=minv,pmat=res),lty=3)
@@ -171,12 +172,7 @@ draw.full.quadratic <- function(x, xname=NULL, yname=NULL, zname=NULL, center='s
     title(main='y=f(u,v)',cex.main=1.5)
   }
   
-  if (center=='scale'){
-   subtitle='Solid Red = 1st Principal Axis; Solid Blue = 2nd Principal Axis\nDashed: u=0, v=0, u+v=0, and u-v=0'
-  }
-  else{
-   subtitle='Solid Red = 1st Principal Axis; Solid Blue = 2nd Principal Axis\nDashed: u=0 and v=0'
-  }
+  subtitle='Solid Red = 1st Principal Axis; Solid Blue = 2nd Principal Axis\nDashed: u=0, v=0, u+v=0, and u-v=0'
   title(sub=subtitle,cex=1.25)
 }
 
